@@ -1,0 +1,9 @@
+*.swp
+*.swo
+
+# Mac system files
+.DS_Store
+
+# Другие временные файлы
+*.tmp
+*~
