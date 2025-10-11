@@ -12,12 +12,7 @@ double str2double(char str[]) {
     int i = 0;
 
     while (str[i] != '\0') {
-        if (str[i] == 'f' || str[i] == 'F') {
-            has_float_suffix = 1;
-            i++;
-            continue;
-        }
-                
+                        
         if (str[i] == '.') {
             after_decimal = 1;
             i++;
