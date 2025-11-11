@@ -1,18 +1,22 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -std=c99
-OBJS = main.o List.o
-TARGET = task3
+SRCMODULES = List.c
+OBJMODULES = $(SRCMODULES:.c=.o)
+CFLAGS = -g -Wall -ansi -pedantic
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+%.o: %.c %.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+task3: main.o $(OBJMODULES)
+	$(CC) $(CFLAGS) $^ -o $@
 
 main.o: main.c List.h
-	$(CC) $(CFLAGS) -c main.c
+	$(CC) $(CFLAGS) -c main.c -o main.o
 
-List.o: List.c List.h
-	$(CC) $(CFLAGS) -c List.c
+ifneq ($(MAKECMDGOALS),clean)
+-include deps.mk
+endif
+
+deps.mk: main.c $(SRCMODULES)
+	$(CC) -MM $^ > $@
 
 clean:
-	rm -f $(OBJS) $(TARGET)
-
-.PHONY: clean
+	rm -f *.o task3 deps.mk
