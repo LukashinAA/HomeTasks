@@ -1,40 +1,29 @@
-# Makefile для сборки shell интерпретатора
-
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -g
-LDFLAGS = 
-
-# Исходные файлы
-SRCS = lexer.c tree.c main.c
-OBJS = lexer.o tree.o main.o
-HDRS = lexer.h tree.h
-
-# Целевой исполняемый файл
+CFLAGS = -Wall -Wextra -std=c99
 TARGET = myshell
+OBJS = main.o lexer.o tree.o
 
-# Цель по умолчанию
 all: $(TARGET)
 
-# Сборка основного приложения
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
-
-# Компиляция отдельных модулей
-lexer.o: lexer.c lexer.h
-	$(CC) $(CFLAGS) -c lexer.c -o $@
-
-tree.o: tree.c tree.h lexer.h
-	$(CC) $(CFLAGS) -c tree.c -o $@
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
 main.o: main.c lexer.h tree.h
-	$(CC) $(CFLAGS) -c main.c -o $@
+	$(CC) $(CFLAGS) -c main.c
 
-# Очистка
+lexer.o: lexer.c lexer.h
+	$(CC) $(CFLAGS) -c lexer.c
+
+tree.o: tree.c tree.h lexer.h
+	$(CC) $(CFLAGS) -c tree.c
+
 clean:
 	rm -f $(OBJS) $(TARGET)
 
-# Пересборка
-rebuild: clean all
+run: $(TARGET)
+	./$(TARGET)
 
-# PHONY цели
-.PHONY: all clean rebuild
+debug: CFLAGS += -g
+debug: clean $(TARGET)
+
+.PHONY: all clean run debug
