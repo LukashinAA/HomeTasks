@@ -6,17 +6,6 @@
 // Начальная емкость списка
 #define INITIAL_CAPACITY 10
 
-// Функция для создания копии строки (аналог strdup)
-char* my_strdup(const char *str) {
-    if (str == NULL) return NULL;
-    
-    size_t len = strlen(str) + 1;  // +1 для '\0'
-    char *copy = (char*)malloc(len);
-    if (copy != NULL) {
-        strcpy(copy, str);
-    }
-    return copy;
-}
 
 // Создание нового списка
 StringList* create_list() {
@@ -50,7 +39,7 @@ void add_string(StringList *list, const char *str) {
     }
     
     // Копируем строку вручную
-    list->items[list->size] = my_strdup(str);
+    list->items[list->size] = strdup(str);
     if (list->items[list->size]) {
         list->size++;
     }
