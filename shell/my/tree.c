@@ -275,45 +275,71 @@ tree *com_list(void) {
 
 // com_sh ::= com_list ['&'] | com_list [';' com_sh]
 tree *com_sh(void) {
-    tree *node = com_list();
-    if (!node) return NULL;
     
+    tree *node = com_list();
+    if (!node) return NULL;  
+    
+   
     token *t = peek_token();
+    
     
     if (!t) return node;
     
-    // Проверяем фон или точку с запятой
+    // ОБРАБОТКА ОПЕРАТОРА '&' (фоновый режим)
     if (strcmp(t->text, "&") == 0) {
-        get_token(); // потребляем '&'
-        background(node);
+        get_token();  // Потребляем оператор '&'
         
-        // Проверяем, есть ли еще команды после &
-        t = peek_token();
+        // Проходим по всем командам в дереве и ставим им backgrnd=1
+        tree *current = node;
+        while (current) {
+        
+            current->backgrnd = 1;
+
+            tree *pipe_cmd = current->pipe;
+            while (pipe_cmd) {
+                pipe_cmd->backgrnd = 1;  
+                pipe_cmd = pipe_cmd->pipe;  
+            }
+            
+           
+            current = current->next;
+        }
+  
+        t = peek_token();  
         if (t && strcmp(t->text, ";") == 0) {
-            get_token(); // потребляем ';'
+            get_token(); 
+            
+          
             tree *next_cmd = com_sh();
             if (next_cmd) {
-                tree *current = node;
-                while (current->next) {
-                    current = current->next;
+             
+                tree *last = node;
+                while (last->next) {
+                    last = last->next;  
                 }
-                current->next = next_cmd;
-                current->type = NXT;
+               
+                last->next = next_cmd;
+                last->type = NXT;  
             }
-        }
-    } else if (strcmp(t->text, ";") == 0) {
-        get_token(); // потребляем ';'
-        tree *next_cmd = com_sh();
-        if (next_cmd) {
-            tree *current = node;
-            while (current->next) {
-                current = current->next;
-            }
-            current->next = next_cmd;
-            current->type = NXT;
         }
     }
-    
+
+    else if (strcmp(t->text, ";") == 0) {
+        get_token(); 
+        
+        tree *next_cmd = com_sh();
+        if (next_cmd) {
+        
+            tree *last = node;
+            while (last->next) {
+                last = last->next;
+            }
+            
+
+            last->next = next_cmd;
+            last->type = NXT;
+        }
+    }
     return node;
 }
 

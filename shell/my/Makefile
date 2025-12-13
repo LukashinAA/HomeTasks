@@ -1,15 +1,10 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99
-TARGET = myshell
-OBJS = main.o lexer.o tree.o
+CFLAGS = -Wall -Wextra -std=c99 -g
 
-all: $(TARGET)
+all: myshell
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
-
-main.o: main.c lexer.h tree.h
-	$(CC) $(CFLAGS) -c main.c
+myshell: lexer.o tree.o executor.o main.o
+	$(CC) $(CFLAGS) -o $@ $^
 
 lexer.o: lexer.c lexer.h
 	$(CC) $(CFLAGS) -c lexer.c
@@ -17,13 +12,13 @@ lexer.o: lexer.c lexer.h
 tree.o: tree.c tree.h lexer.h
 	$(CC) $(CFLAGS) -c tree.c
 
+executor.o: executor.c executor.h tree.h
+	$(CC) $(CFLAGS) -c executor.c
+
+main.o: main.c lexer.h tree.h executor.h
+	$(CC) $(CFLAGS) -c main.c
+
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f *.o myshell
 
-run: $(TARGET)
-	./$(TARGET)
-
-debug: CFLAGS += -g
-debug: clean $(TARGET)
-
-.PHONY: all clean run debug
+.PHONY: all clean
