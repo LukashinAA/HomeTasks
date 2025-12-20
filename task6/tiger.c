@@ -27,6 +27,11 @@ void sigint_handler(int sig) {
     exit(0);
 }
 
+void sigterm_handler(int sig) {
+    printf("\nЗавершение\n");
+    exit(0);
+}
+
 void sem_wait() {
     struct sembuf op = {0, -1, 0};
     semop(sem_id, &op, 1);
@@ -79,12 +84,13 @@ void keeper() {
 }
 
 int main() {
-    signal(SIGINT, sigint_handler);
+    signal(SIGTERM, sigint_handler);
+    signal(SIGINT, sigterm_handler);
     atexit(cleanup);
     srand(time(NULL));
     
     shm_id = shmget(IPC_PRIVATE, sizeof(int), 0666 | IPC_CREAT);
-    bowl = (int*)shmat(shm_id, NULL, 0);
+    bowl = shmat(shm_id, NULL, 0);
     *bowl = MAX_MEAT;
     printf("Миска создана. Начало: %d кг\n", *bowl);
     
