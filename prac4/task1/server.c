@@ -25,10 +25,8 @@ void handle_client(int fd) {
         n = read(fd, buf, sizeof(buf) - 1);
         if (n <= 0) break;
         
-        // убираем перевод строки в конце
         if (buf[n-1] == '\n') buf[n-1] = '\0';
         
-        // убираем пробелы в начале
         char *p = buf;
         while (*p == ' ') p++;
         
@@ -51,7 +49,6 @@ void handle_client(int fd) {
             write(fd, tmp, strlen(tmp));
         }
         else {
-            // пробуем преобразовать в число
             char *endptr;
             int num = strtol(p, &endptr, 10);
             if (*endptr == '\0') {

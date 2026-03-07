@@ -53,7 +53,6 @@ int main() {
         
         if (strcmp(buf, "exit") == 0 || strcmp(buf, "\\exit") == 0) break;
         
-        // отправляем команду с \n в конце
         char temp[256];
         sprintf(temp, "%s\n", buf);
         write(sock, temp, strlen(temp));
