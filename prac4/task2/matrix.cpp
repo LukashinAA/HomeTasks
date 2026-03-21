@@ -444,3 +444,39 @@ ostream& operator<<(ostream& os, const matrix& mat) {
     }
     return os;
 }
+
+double matrix::trace() const {
+     if (rows_ != cols_) {
+        throw error("Not square matrices", __LINE__);
+    }
+    
+    double sum = 0.0;
+    for (int i = 0; i < rows_; ++i) {
+        sum += data_[i][i];
+    }
+    return sum;
+}
+
+bool matrix::operator^(const matrix& other) const {
+    if (rows_ != cols_) {
+        throw error("Left matrix must be square" , __LINE__);
+    }
+    if (other.rows_ != other.cols_) {
+        throw error("Right matrix must be square" , __LINE__);
+    }
+
+    double trace1 = 0.0;
+    double trace2 = 0.0;
+
+    for (int i = 0; i < rows_; ++i) {
+        trace1 += data_[i][i];
+    }
+
+    for (int i = 0; i < other.rows_; ++i) {
+        trace2 += other.data_[i][i];
+    }
+
+    return trace1 >= trace2;
+}
+
+

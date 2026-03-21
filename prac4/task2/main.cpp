@@ -135,6 +135,59 @@ int main() {
         cout << "L / R (horizontal concatenation):\n" << hor << endl;
         
         cout << "\n=== ALL TESTS PASSED ===" << endl;
+        matrix q1(3, 3);
+        q1.set(0, 0, 1); q1.set(0, 1, 2); q1.set(0, 2, 3);
+        q1.set(1, 0, 4); q1.set(1, 1, 5); q1.set(1, 2, 6);
+        q1.set(2, 0, 7); q1.set(2, 1, 8); q1.set(2, 2, 9);
+        
+        matrix q2(3, 3);
+        q2.set(0, 0, 9); q2.set(0, 1, 8); q2.set(0, 2, 7);
+        q2.set(1, 0, 6); q2.set(1, 1, 5); q2.set(1, 2, 4);
+        q2.set(2, 0, 3); q2.set(2, 1, 2); q2.set(2, 2, 1);
+        
+        matrix q3(3, 3);
+        q3.set(0, 0, 10); q3.set(0, 1, 0); q3.set(0, 2, 0);
+        q3.set(1, 0, 0); q3.set(1, 1, 20); q3.set(1, 2, 0);
+        q3.set(2, 0, 0); q3.set(2, 1, 0); q3.set(2, 2, 30);
+        
+        cout << "\nMatrix m1:\n" << q1 << endl;
+        cout << "Trace of m1 = " << q1.trace() << endl;
+        
+        cout << "\nMatrix m2:\n" << q2 << endl;
+        cout << "Trace of m2 = " << q2.trace() << endl;
+        
+        cout << "\nMatrix m3:\n" << q3 << endl;
+        cout << "Trace of m3 = " << q3.trace() << endl;
+                
+        if (q1 ^ q2) {
+            cout << "m1 ^ m2: true (trace m1 >= trace m2)" << endl;
+        } else {
+            cout << "m1 ^ m2: false (trace m1 < trace m2)" << endl;
+        }
+        
+        if (q2 ^ q1) {
+            cout << "m2 ^ m1: true (trace m2 >= trace m1)" << endl;
+        } else {
+            cout << "m2 ^ m1: false (trace m2 < trace m1)" << endl;
+        }
+        
+        if (q3 ^ q1) {
+            cout << "m3 ^ m1: true (trace m3 >= trace m1)" << endl;
+        } else {
+            cout << "m3 ^ m1: false (trace m3 < trace m1)" << endl;
+        }
+        
+        if (q1 ^ q3) {
+            cout << "m1 ^ m3: true (trace m1 >= trace m3)" << endl;
+        } else {
+            cout << "m1 ^ m3: false (trace m1 < trace m3)" << endl;
+        }
+        
+        if (q1 ^ q1) {
+            cout << "m1 ^ m1: true (trace m1 >= trace m1)" << endl;
+        }
+
+
         
     } catch (const matrix::error& e) {
         cerr << "ERROR: " << e.what() << endl;

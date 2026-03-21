@@ -46,12 +46,12 @@ public:
 
     void set(int i, int j, double val);
 
+
     matrix operator[](int index) const;
 
     matrix& operator*=(double scalar);
     friend matrix operator*(const matrix& lhs, double rhs);
     friend matrix operator*(double lhs, const matrix& rhs);
-
     friend matrix operator+(const matrix& lhs, const matrix& rhs);
     friend matrix operator-(const matrix& lhs, const matrix& rhs);
     friend matrix operator*(const matrix& lhs, const matrix& rhs);
@@ -69,6 +69,9 @@ public:
     friend matrix operator/(const matrix& lhs, const matrix& rhs);
 
     friend std::ostream& operator<<(std::ostream& os, const matrix& mat);
+
+    double trace() const;
+    bool operator^(const matrix& other) const;
 };
 
 #endif
